@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itbaizhan.mapper.MarketPOMapper">
+  <resultMap id="BaseResultMap" type="com.itbaizhan.model.MarketPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="theme" jdbcType="VARCHAR" property="theme" />
+    <result column="budget" jdbcType="REAL" property="budget" />
+    <result column="clue" jdbcType="INTEGER" property="clue" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.itbaizhan.model.MarketPO">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, theme, budget, clue
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from market
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="queryMarket" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select  * from market limit #{start} , #{pageSize}
+  </select>
+  <select id="getTotal" resultType="java.lang.Integer">
+    select  count(id) from market
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from market
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itbaizhan.model.MarketPO">
+    insert into market (id, theme, budget, 
+      clue, description)
+    values (#{id,jdbcType=INTEGER}, #{theme,jdbcType=VARCHAR}, #{budget,jdbcType=REAL}, 
+      #{clue,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.itbaizhan.model.MarketPO">
+    insert into market
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="theme != null">
+        theme,
+      </if>
+      <if test="budget != null">
+        budget,
+      </if>
+      <if test="clue != null">
+        clue,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="theme != null">
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="budget != null">
+        #{budget,jdbcType=REAL},
+      </if>
+      <if test="clue != null">
+        #{clue,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itbaizhan.model.MarketPO">
+    update market
+    <set>
+      <if test="theme != null">
+        theme = #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="budget != null">
+        budget = #{budget,jdbcType=REAL},
+      </if>
+      <if test="clue != null">
+        clue = #{clue,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.itbaizhan.model.MarketPO">
+    update market
+    set theme = #{theme,jdbcType=VARCHAR},
+      budget = #{budget,jdbcType=REAL},
+      clue = #{clue,jdbcType=INTEGER},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itbaizhan.model.MarketPO">
+    update market
+    set theme = #{theme,jdbcType=VARCHAR},
+      budget = #{budget,jdbcType=REAL},
+      clue = #{clue,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>
